@@ -30,6 +30,8 @@ public class App {
                 wiseSayingController.actionAdd();
                 System.out.println("명언 : ");
                 System.out.println("작가 : ");
+            } else if ("목록".equals(cmd)) {
+                wiseSayingController.actionList();
             }
         }
     }
