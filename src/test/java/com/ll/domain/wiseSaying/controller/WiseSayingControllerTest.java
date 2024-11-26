@@ -1,5 +1,6 @@
 package com.ll.domain.wiseSaying.controller;
 
+import com.ll.App;
 import com.ll.standard.util.TestUtil;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,9 +12,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class WiseSayingControllerTest {
     @Test
-    @DisplayName("== 명언 앱 ==")
+    @DisplayName("명령) ")
     public void t1() {
-        Scanner scanner = TestUtil.getScanner("종료");
+        Scanner scanner = TestUtil.getScanner("""
+                목록
+                종료
+                """);
         ByteArrayOutputStream outputStream = TestUtil.setOutToByteArray();
 
         App app = new App(scanner);
@@ -23,6 +27,6 @@ public class WiseSayingControllerTest {
 
         TestUtil.clearSetOutToByteArray(outputStream);
 
-        assertThat(output).contains("== 명언 앱 ==");
+        assertThat(output).contains("명령) ");
     }
 }
