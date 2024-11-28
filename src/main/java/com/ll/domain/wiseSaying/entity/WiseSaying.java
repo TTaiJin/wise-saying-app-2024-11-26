@@ -1,37 +1,37 @@
 package com.ll.domain.wiseSaying.entity;
 
+import lombok.*;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+@AllArgsConstructor
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode
 public class WiseSaying {
     private int id;
     private String content;
     private String author;
 
-    public WiseSaying(int id, String content, String author) {
-        this.id = id;
-        this.content = content;
-        this.author = author;
+    public WiseSaying(Map<String, Object> map) {
+        this.id = (int) map.get("id");
+        this.content = (String) map.get("content");
+        this.author = (String) map.get("author");
     }
 
-    public int getId() {
-        return id;
+    public boolean isNew() {
+        return id == 0;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    public Map<String, Object> toMap() {
+        Map<String, Object> map = new LinkedHashMap<>();
 
-    public String getContent() {
-        return content;
-    }
+        map.put("id", id);
+        map.put("content", content);
+        map.put("author", author);
 
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
+        return map;
     }
 }

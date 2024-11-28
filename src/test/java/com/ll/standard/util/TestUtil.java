@@ -11,7 +11,6 @@ public class TestUtil {
     public static ByteArrayOutputStream setOutToByteArray() {
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         System.setOut(new PrintStream(output));
-
         return output;
     }
 

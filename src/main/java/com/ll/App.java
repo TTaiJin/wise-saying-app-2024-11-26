@@ -1,6 +1,6 @@
 package com.ll;
 
-import com.ll.domain.system.controller.SystemController.SystemController;
+import com.ll.domain.system.controller.SystemController;
 import com.ll.domain.wiseSaying.controller.WiseSayingController;
 
 import java.util.Scanner;
@@ -8,12 +8,12 @@ import java.util.Scanner;
 public class App {
     private final Scanner scanner;
     private final SystemController systemController;
-    private final WiseSayingController wiseSayingController;
+    private final WiseSayingController wiseSyingController;
 
     public App(Scanner scanner) {
         this.scanner = scanner;
         this.systemController = new SystemController();
-        this.wiseSayingController = new WiseSayingController(scanner);
+        this.wiseSyingController = new WiseSayingController(scanner);
     }
 
     public void run() {
@@ -23,15 +23,24 @@ public class App {
             System.out.print("명령) ");
             String cmd = scanner.nextLine();
 
-            if ("종료".equals(cmd)) {
-                systemController.actionExit();
-                break;
-            } else if ("등록".equals(cmd)) {
-                wiseSayingController.actionAdd();
-                System.out.println("명언 : ");
-                System.out.println("작가 : ");
-            } else if ("목록".equals(cmd)) {
-                wiseSayingController.actionList();
+            Command command = new Command(cmd);
+
+            switch (command.getActionName()) {
+                case "종료":
+                    systemController.actionExit();
+                    return;
+                case "등록":
+                    wiseSyingController.actionAdd();
+                    break;
+                case "목록":
+                    wiseSyingController.actionList();
+                    break;
+                case "삭제":
+                    wiseSyingController.actionDelete(command);
+                    break;
+                case "수정":
+                    wiseSyingController.actionModify(command);
+                    break;
             }
         }
     }
