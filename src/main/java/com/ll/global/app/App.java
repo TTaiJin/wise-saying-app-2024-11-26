@@ -1,4 +1,4 @@
-package com.ll;
+package com.ll.global.app;
 
 import com.ll.domain.system.controller.SystemController;
 import com.ll.domain.wiseSaying.controller.WiseSayingController;
@@ -33,7 +33,7 @@ public class App {
                     wiseSyingController.actionAdd();
                     break;
                 case "목록":
-                    wiseSyingController.actionList();
+                    wiseSyingController.actionList(command);
                     break;
                 case "삭제":
                     wiseSyingController.actionDelete(command);
@@ -41,7 +41,14 @@ public class App {
                 case "수정":
                     wiseSyingController.actionModify(command);
                     break;
+                case "빌드":
+                    wiseSyingController.actionBuild();
+                    break;
             }
         }
+    }
+
+    public void makeSampleData(int items) {
+        wiseSyingController.makeSampleData(items);
     }
 }

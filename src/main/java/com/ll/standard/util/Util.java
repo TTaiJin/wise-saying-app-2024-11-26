@@ -1,10 +1,14 @@
 package com.ll.standard.util;
 
+import lombok.SneakyThrows;
+
 import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 public class Util {
     public static class file {
@@ -23,6 +27,10 @@ public class Util {
             return !exists(filePath);
         }
 
+        public static void set(String filePath, int content) {
+            set(filePath, String.valueOf(content));
+        }
+
         public static void set(String filePath, String content) {
             Path path = getPath(filePath);
             try {
@@ -37,6 +45,34 @@ public class Util {
                 return Files.readString(getPath(filePath));
             } catch (IOException e) {
                 return defaultValue;
+            }
+        }
+
+        public static int getAsInt(String filePath, int defaultValue) {
+            String content = get(filePath, "");
+
+            if (content.isBlank()) {
+                return defaultValue;
+            }
+
+            try {
+                return Integer.parseInt(content);
+            } catch (NumberFormatException e) {
+                return defaultValue;
+            }
+        }
+
+        private static class FileDeleteVisitor extends SimpleFileVisitor<Path> {
+            @Override
+            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                Files.delete(file);
+                return FileVisitResult.CONTINUE;
+            }
+
+            @Override
+            public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+                Files.delete(dir);
+                return FileVisitResult.CONTINUE;
             }
         }
 
@@ -85,24 +121,45 @@ public class Util {
                 throw new RuntimeException("파일 접근 실패: " + path, e);
             }
         }
-    }
 
-    private static class FileDeleteVisitor extends SimpleFileVisitor<Path> {
-        @Override
-        public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-            Files.delete(file);
-            return FileVisitResult.CONTINUE;
-        }
-
-        @Override
-        public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
-            Files.delete(dir);
-            return FileVisitResult.CONTINUE;
+        @SneakyThrows
+        public static Stream<Path> walkRegularFiles(String dirPath, String fileNameRegex) {
+            try {
+                return Files.walk(Path.of(dirPath))
+                        .filter(Files::isRegularFile)
+                        .filter(path -> path.getFileName().toString().matches(fileNameRegex));
+            } catch (NoSuchFileException e) {
+                return Stream.empty();
+            }
         }
     }
 
     public static class json {
         private json() {
+        }
+
+        public static String toString(List<Map<String, Object>> mapList) {
+            StringBuilder sb = new StringBuilder();
+
+            sb.append("[");
+            sb.append("\n");
+
+            String indent = "    ";
+
+            mapList.forEach(map -> {
+                sb.append(indent);
+                sb.append(toString(map).replaceAll("\n", "\n" + indent));
+                sb.append(",\n");
+            });
+
+            if (!mapList.isEmpty()) {
+                sb.delete(sb.length() - 2, sb.length());
+            }
+
+            sb.append("\n");
+            sb.append("]");
+
+            return sb.toString();
         }
 
         public static String toString(Map<String, Object> map) {

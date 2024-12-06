@@ -84,6 +84,4 @@ public class FileUtilTest {
 
         Util.file.delete(filePath);
     }
-
-
 }

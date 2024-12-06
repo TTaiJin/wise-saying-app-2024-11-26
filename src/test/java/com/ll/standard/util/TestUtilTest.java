@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class TestUtilTest {
     @Test
-    @DisplayName("TestUtil.getScanner()")
+    @DisplayName("TestUtil.genScanner()")
     public void t1() {
         Scanner scanner = TestUtil.getScanner("""
                 등록
@@ -40,6 +40,4 @@ public class TestUtilTest {
         assertThat(out).isEqualTo("2 / 이순신 / 나의 죽음을 적들에게 알리지 말라!");
         System.out.println("이제는 화면에 출력됩니다.");
     }
-
-
 }
